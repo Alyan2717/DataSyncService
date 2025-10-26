@@ -1,4 +1,5 @@
 ﻿using Renci.SshNet;
+using Serilog;
 
 namespace DataSyncService.Services
 {
@@ -49,6 +50,7 @@ namespace DataSyncService.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"❌ SFTP Upload failed: {ex.Message}");
+                Log.Error(ex, "SFTP Upload failed: {ErrorMessage}", ex.Message);
                 return false;
             }
         }
@@ -81,6 +83,7 @@ namespace DataSyncService.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"❌ SFTP Download failed: {ex.Message}");
+                Log.Error(ex, "SFTP Download failed: {ErrorMessage}", ex.Message);
                 return false;
             }
         }
@@ -99,6 +102,7 @@ namespace DataSyncService.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"❌ SFTP list failed: {ex.Message}");
+                Log.Error(ex, "SFTP List failed: {ErrorMessage}", ex.Message);
             }
             return files;
         }
