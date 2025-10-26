@@ -17,7 +17,6 @@ namespace DataSyncService.Services
             var port = int.Parse(_config["SftpConfig:Port"]);
             var username = _config["SftpConfig:Username"];
             var password = _config["SftpConfig:Password"];
-
             return new SftpClient(host, port, username, password);
         }
 
@@ -26,15 +25,62 @@ namespace DataSyncService.Services
             using var client = GetClient();
             try
             {
+                if (!File.Exists(localFilePath))
+                {
+                    Console.WriteLine($"❌ File not found: {localFilePath}");
+                    return false;
+                }
+
                 client.Connect();
+                if (!client.IsConnected)
+                {
+                    Console.WriteLine("❌ Failed to connect to SFTP server.");
+                    return false;
+                }
+
+                var remotePath = $"{_config["SftpConfig:RemoteFolder"]}/{remoteFileName}";
                 using var fileStream = File.OpenRead(localFilePath);
-                client.UploadFile(fileStream, $"{_config["SftpConfig:RemoteFolder"]}/{remoteFileName}", true);
+                client.UploadFile(fileStream, remotePath, true);
                 client.Disconnect();
+
+                Console.WriteLine($"✅ Uploaded {remoteFileName} successfully!");
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"SFTP Upload failed: {ex.Message}");
+                Console.WriteLine($"❌ SFTP Upload failed: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool DownloadFile(string remoteFileName, string localFolder)
+        {
+            using var client = GetClient();
+            try
+            {
+                client.Connect();
+                if (!client.IsConnected)
+                {
+                    Console.WriteLine("❌ Failed to connect to SFTP server.");
+                    return false;
+                }
+
+                if (!Directory.Exists(localFolder))
+                    Directory.CreateDirectory(localFolder);
+
+                var localPath = Path.Combine(localFolder, remoteFileName);
+                var remotePath = $"{_config["SftpConfig:RemoteFolder"]}/{remoteFileName}";
+
+                using var fileStream = File.Create(localPath);
+                client.DownloadFile(remotePath, fileStream);
+                client.Disconnect();
+
+                Console.WriteLine($"✅ Downloaded {remoteFileName} to {localPath}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ SFTP Download failed: {ex.Message}");
                 return false;
             }
         }
@@ -52,7 +98,7 @@ namespace DataSyncService.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"List failed: {ex.Message}");
+                Console.WriteLine($"❌ SFTP list failed: {ex.Message}");
             }
             return files;
         }

@@ -56,5 +56,23 @@ namespace DataSyncService.Controllers
             var logs = _context.SyncLogs.OrderByDescending(l => l.CreatedAt).ToList();
             return Ok(logs);
         }
+
+        [HttpPost("download")]
+        public IActionResult DownloadAllRemoteFiles()
+        {
+            var files = _sftpService.ListRemoteFiles();
+            var downloadFolder = Path.Combine(Directory.GetCurrentDirectory(), "downloads");
+
+            var results = new List<object>();
+
+            foreach (var file in files)
+            {
+                bool success = _sftpService.DownloadFile(file, downloadFolder);
+                results.Add(new { file, Status = success ? "Downloaded" : "Failed" });
+            }
+
+            return Ok(results);
+        }
+
     }
 }
