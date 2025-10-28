@@ -7,7 +7,7 @@ A production-grade .NET 8 backend microservice for secure file synchronization b
 - Automatic & manual SFTP synchronization
 - Background jobs with Quartz.NET
 - Structured logging using Serilog
-- SQL Server database with EF Core
+- MySQL database with EF Core
 - Swagger API documentation
 
 ## ⚙️ Tech Stack
@@ -16,18 +16,7 @@ A production-grade .NET 8 backend microservice for secure file synchronization b
 - **Quartz.NET**
 - **SSH.NET (SFTP)**
 - **Serilog**
-- **SQL Server**
-
-## 📁 Project Structure
-DataSyncService/
-├── Controllers/
-├── Services/
-├── Data/
-├── Models/
-├── Middleware/
-├── Logs/
-├── Program.cs
-├── appsettings.json
+- **MySQL**
 
 ## 🌐 API Endpoints
 | Method | Endpoint | Description |
@@ -41,25 +30,11 @@ DataSyncService/
        ↑
 (Quartz Job auto-sync every minute)
 
-## 🧭 6️⃣ Final Folder Structure
-DataSyncService/
-├── Controllers/
-│ ├── FileController.cs
-│ └── SyncController.cs
-├── Services/
-│ ├── SftpService.cs
-│ └── SyncJob.cs
-├── Data/
-│ ├── AppDbContext.cs
-│ ├── Entities/
-│ ├── FileRecord.cs
-│ └── SyncLog.cs
-├── Models/
-│ ├── ApiResponse.cs
-├── Middleware/
-│ └── ExceptionMiddleware.cs
-├── appsettings.json
-├── Program.cs
-├── README.md
-├── Logs/
-└── DataSync.db
+# 🗂️ DataSync API Service
+
+**Live Demo:** [https://datasyncservice.onrender.com/swagger/index.html](https://datasyncservice.onrender.com/swagger/index.html)
+
+![.NET 8](https://img.shields.io/badge/.NET-8.0-blueviolet)
+![Status](https://img.shields.io/badge/status-active-success)
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
+![Deploy](https://img.shields.io/badge/Deployed-Render-blue)
