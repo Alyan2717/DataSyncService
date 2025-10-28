@@ -1,12 +1,28 @@
-﻿namespace DataSyncService.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DataSyncService.Data.Entities
 {
     public class FileRecord
     {
+        [Key]
         public int Id { get; set; }
-        public string FileName { get; set; } = string.Empty;
-        public string FilePath { get; set; } = string.Empty;
-        public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
-        public bool Synced { get; set; } = false;
+
+        [Required]
+        [Column(TypeName = "varchar(255)")]
+        public string FileName { get; set; }
+
+        [Required]
+        [Column(TypeName = "varchar(500)")]
+        public string FilePath { get; set; }
+
+        [Column(TypeName = "datetime")]
+        public DateTime UploadedAt { get; set; }
+
+        public bool Synced { get; set; }
+
+        [Column(TypeName = "datetime")]
         public DateTime? LastSyncDate { get; set; }
+
     }
 }
