@@ -26,6 +26,13 @@ namespace DataSyncService.Services
             using var client = GetClient();
             try
             {
+                var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "upload");
+                if (!Directory.Exists(uploadsPath))
+                {
+                    Directory.CreateDirectory(uploadsPath);
+                    Console.WriteLine($"✅ Created uploads directory: {uploadsPath}");
+                }
+
                 if (!File.Exists(localFilePath))
                 {
                     Console.WriteLine($"❌ File not found: {localFilePath}");

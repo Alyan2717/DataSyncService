@@ -24,7 +24,7 @@ namespace DataSyncService.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
-            var uploadPath = Path.Combine(_env.ContentRootPath, "uploads");
+            var uploadPath = Path.Combine(_env.ContentRootPath, "upload");
 
             if (!Directory.Exists(uploadPath))
                 Directory.CreateDirectory(uploadPath);
